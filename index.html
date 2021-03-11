@@ -30,37 +30,36 @@
         </div>
     </form>
     <script>
-        let movies = [];
-        // example {id:1592304983049, title: 'Deadpool', year: 2015}
-        const addMovie = (ev)=>{
+        let Data = [];
+        const addData = (ev)=>{
             ev.preventDefault();  //to stop the form submitting
-            let movie = {
+            let datas = {
                name: document.getElementById('name').value,
                 mail: document.getElementById('email').value
             }
-            movies.push(movie);
+            Data.push(datas);
             document.forms[0].reset(); // to clear the form for the next entries
             //document.querySelector('form').reset();
 
             //for display purposes only
-            console.warn('added' , {movies} );
+            console.warn('added' , {Data} );
             let pre = document.querySelector('#msg pre');
-            pre.textContent = '\n' + JSON.stringify(movies, '\t', 2);
+            pre.textContent = '\n' + JSON.stringify(Data, '\t', 2);
 
             //saving to localStorage
-            localStorage.setItem('MyMovieList', JSON.stringify(movies) );
+            localStorage.setItem('List', JSON.stringify(Data) );
         }
         //click
         document.addEventListener('DOMContentLoaded', ()=>{
-            document.getElementById('btn').addEventListener('click', addMovie);
+            document.getElementById('btn').addEventListener('click', addData);
         });
         // Mouse over
        /* document.addEventListener('DOMContentLoaded', ()=>{
-            document.getElementById('btn').addEventListener('mouseover', addMovie);
+            document.getElementById('btn').addEventListener('mouseover', addData);
         });
         //Mouse out
         document.addEventListener('DOMContentLoaded', ()=>{
-            document.getElementById('btn').addEventListener('mouseout', addMovie);
+            document.getElementById('btn').addEventListener('mouseout', addData);
         });*/
     </script>
 </body>
