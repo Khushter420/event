@@ -1,66 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Putting User Input into JS Objects</title>
-    <style>
-        .formBox{
-            padding: 0.5rem 2rem;
-        }
-    </style>
-</head>
-<body>
-    <form>
-        <div class="formBox">
-            <label for="name"></label>
-            <input type="text" id="name" placeholder="enter the name"/>
-        </div>
-
-        <div class="formBox">
-            <label for="email"></label>
-            <input type="email" id="email" placeholder="enter the mail"/>
-        </div>
-        <div class="formBox">
-            <button id="btn">Click to Add</button>
-        </div>
-        <div id="msg">
-            <pre></pre>
-        </div>
-    </form>
-    <script>
-        let Data = [];
-        const addData = (ev)=>{
-            ev.preventDefault();  //to stop the form submitting
-            let datas = {
-               name: document.getElementById('name').value,
-                mail: document.getElementById('email').value
+<html>
+    <head>
+        <title>Javascript: add edit delete LI</title>
+        <meta charset="windows-1252">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <style>
+            li{cursor: pointer}
+        </style>
+        
+    </head>
+    <body>
+       
+        <input type="text" id="txt">
+        <input type="email" id="email">
+        <button onclick="addLI()">Add</button>
+        <button onclick="editLI()">Edit</button>
+        <button onclick="deleteLI()">Delete</button>
+        
+        <ul id="list"> </ul>
+        
+        <script>
+            
+            var inputText = document.getElementById("txt"),
+                inputmail=document.getElementById("email"),
+                 items = document.querySelectorAll("#list li"),
+                 tab = [], index;
+         
+             // get the selected li index using array
+             // populate array with li values
+             
+             for(var i = 0; i < items.length; i++){
+                 tab.push(items[i].innerHTML);
+             }
+             
+             // get li index onclick
+             for(var i = 0; i < items.length; i++){
+                 
+                 items[i].onclick = function(){
+                     index = tab.indexOf(this.innerHTML);
+                     console.log(this.innerHTML + " INDEX = " + index);
+                     // set the selected li value into input text
+                     inputText.value = this.innerHTML;
+                     inputmail.value=this.innerHTML;
+                 };
+                 
+             }
+            
+            function refreshArray()
+            {
+                // clear array
+                tab.length = 0;
+                items = document.querySelectorAll("#list li");
+                // fill array
+                for(var i = 0; i < items.length; i++){
+                 tab.push(items[i].innerHTML);
+               }
             }
-            Data.push(datas);
-            document.forms[0].reset(); // to clear the form for the next entries
-            //document.querySelector('form').reset();
-
-            //for display purposes only
-            console.warn('added' , {Data} );
-            let pre = document.querySelector('#msg pre');
-            pre.textContent = '\n' + JSON.stringify(Data, '\t', 2);
-
-            //saving to localStorage
-            localStorage.setItem('List', JSON.stringify(Data) );
-        }
-        //click
-        document.addEventListener('DOMContentLoaded', ()=>{
-            document.getElementById('btn').addEventListener('click', addData);
-        });
-        // Mouse over
-       /* document.addEventListener('DOMContentLoaded', ()=>{
-            document.getElementById('btn').addEventListener('mouseover', addData);
-        });
-        //Mouse out
-        document.addEventListener('DOMContentLoaded', ()=>{
-            document.getElementById('btn').addEventListener('mouseout', addData);
-        });*/
-    </script>
-</body>
+            function addLI(){
+                
+                var listNode = document.getElementById("list"),
+                    textNode = document.createTextNode(inputText.value),
+                    textNode1=document.createTextNode(inputmail.value),
+                    liNode = document.createElement("LI");
+                    
+                    liNode.appendChild(textNode);
+                    liNode.appendChild(textNode1);
+                    listNode.appendChild(liNode);
+                    
+                    refreshArray();
+                    
+                    // add event to the new LI
+                    
+                    liNode.onclick = function(){
+                     index = tab.indexOf(liNode.innerHTML);
+                     console.log(liNode.innerHTML + " INDEX = " +  index);
+                     // set the selected li value into input text
+                     inputText.value = liNode.innerHTML; 
+                     inputmail.value=liNode.innerHTML;
+                 };
+                    
+             }
+             
+             function editLI(){
+                 // edit the selected li using input text
+                 items[index].innerHTML = 'name ='+ inputText.value;
+                 items[index].innerHTML = 'mail ='+ inputmail.value;
+                 refreshArray();
+              }
+              
+              function deleteLI(){
+                  
+                      refreshArray();
+                      if(items.length > 0){
+                          items[index].parentNode.removeChild(items[index]);
+                          inputText.value = "name ";
+                          inputmail.value = "mail ";
+                      }
+              }
+            
+        </script>
+        
+    </body>
 </html>
